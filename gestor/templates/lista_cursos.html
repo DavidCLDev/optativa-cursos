@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de cursos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 antialiased p-4 md:p-6 text-gray-300">
+    <main class="max-w-4xl bg-gray-800 mx-auto rounded-xl p-6">
+        <header class="flex flex-wrap items-center justify-between mb-8 pb-5">
+            <div>
+                <h1 class="text-3xl text-gray-200 font-semibold tracking-tight">Cursos</h1>
+                <p class="text-sm text-gray-400">Listado de cursos</p>
+            </div>
+            <div class="flex gap-4 items-center">
+                <a class="text-sm bg-green-600 px-5 py-3 rounded-xl" href="{% url 'crear_curso' %}">Crear</a>
+                <div class="text-sm bg-gray-600 px-4 py-2 rounded-full">
+                    <span>{{ cursos|length }}</span>
+                    {% if cursos|length == 1 %}Curso{% else %}Cursos{% endif %}
+                </div>
+            </div>
+        </header>
+        {% if cursos %}
+        <ul class="space-y-4">
+            {% for curso in cursos %}
+            <li class="bg-gray-700 rounded-xl p-5 md:p-6">
+                <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-6">
+                    <div class="flex-1 min-w-0">
+                        <h2 class="text-xl ">{{ curso.titulo }}</h2>
+                        <p class="text-{% if curso.nivel == "Avanzado" %}red{% elif curso.nivel == "Intermedio" %}yellow{% else %}green{% endif %}-500">
+                            {{ curso.nivel }}
+                        </p>
+                        <p>
+                            # de lecciones: {{ curso.num_lecciones}}
+                        </p>
+                    </div>
+                    <div class="flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-2.5 shrink-0">
+                        <a href="{% url "detalle_curso" id_curso=curso.id %}"
+                        class="bg-gray-600 w-full md:w-auto text-center rounded-md px-4 py-2 hover:bg-gray-500/80 transition-colors">Ver</a>
+                        <a 
+                        href="{% url 'eliminar_curso' curso.id %}"
+                        class="bg-red-600 w-full md:w-auto text-center rounded-md px-4 py-2 hover:bg-red-500 transition-colors"
+                        onclick="return confirm('¿Estás seguro de eliminar el curso? Una vez eliminado no se podrá recuperar su información.')">
+                            Eliminar
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-state rounded-xl p-10 text-center border-2 border-gray-600 border-dashed">
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-4xl mb-1">🤷‍♂️</span>
+                <h3 class="text-lg text-gray-200">No hay cursos disponibles</h3>
+                <p class="text-sm text-gray-400 max-w-sm">Parece que todavía no has matriculado ningún curso</p>
+            </div>
+        </div>
+        {% endif %}
+        <footer class="mt-8 pt-4 border-t border-gray-500/60">
+            {{ cursos|length }} Cursos
+        </footer>
+    </main>
+</body>
+</html>

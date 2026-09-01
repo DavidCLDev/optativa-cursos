@@ -1,0 +1,10 @@
+# =========================
+# Python
+# =========================
+
+# Entornos virtuales
+venv/
+
+# Caché de Python
+__pycache__/
+

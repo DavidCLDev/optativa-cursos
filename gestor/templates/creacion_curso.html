@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input, select {
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 antialiased p-24 text-gray-300">
+    <main class="max-w-sm bg-gray-800 mx-auto rounded-xl p-8">
+        <header class="mb-4">
+            <h1 class="text-3xl tracking-tight font-bold text-center">Nuevo Curso</h1>
+        </header>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <div class="flex flex-col items-center">
+                    <label for="titulo">Título</label>
+                    <input type="text" name="titulo" id="titulo" class="text-gray-700 px-2 py-1 rounded-md outline-none">
+                </div>
+                <div class="flex flex-col items-center">
+                    <label for="nivel">Nivel</label>
+                    <br>
+                    <select name="nivel" id="nivel" class="text-gray-700 px-2 py-1 rounded-md">
+                        <option value="Básico">Básico</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzado">Avanzado</option>
+                    </select>
+                </div>
+                <div class="flex flex-col items-center">
+                    <label for="num_lecciones">Número de lecciones</label>
+                    <br>
+                    <input type="number" name="num_lecciones" id="num_lecciones" class="text-gray-700 px-2 py-1 rounded-md">
+                </div>
+            </div>
+            <button type="submit" class="bg-green-600 hover:bg-green-500 w-full py-1 mt-6 rounded-md">Crear</button>
+        </form>
+    </main>
+</body>
+</html>

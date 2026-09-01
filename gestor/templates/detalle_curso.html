@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle curso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 antialiased p-4 md:p-6 text-gray-300">
+    <a href="/" class="hidden md:inline-flex items-center justify-center gap-1.5 px-8 py-3 text-sm font-medium text-gray-400 bg-gray-700/80 hover:bg-gray-600/80 rounded-lg transition-colors">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 14L4 9l5-5" />
+            <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+        </svg>
+    </a>
+    <main class="max-w-4xl bg-gray-800 mx-auto mt-8 rounded-xl shadow-xl p-6">
+        <header class="flex items-end justify-between pb-4 border-b border-gray-300">
+            <h1 class="text-2xl font-semibold tracking-tight">{{ curso.titulo }}</h1>
+            <a
+            class="bg-red-600 hover:bg-red-500 px-3 py-2 rounded"
+            href="{% url 'eliminar_curso' curso.id %}"
+            onclick="return confirm('¿Estás seguro de eliminar el curso? Una vez eliminado no se podrá recuperar su información.')">
+                Eliminar
+            </a>
+        </header>
+        <div class="mt-6">
+            <p>
+                <span class="font-semibold">Nivel:</span>
+                <span class="text-{% if curso.nivel == "Avanzado" %}red{% elif curso.nivel == "Intermedio" %}yellow{% else %}green{% endif %}-500">{{ curso.nivel }}</span>
+            </p>
+            <p>
+                <span class="font-semibold">Número de lecciones:</span> {{ curso.num_lecciones }}
+            </p>
+        </div>
+    </main>
+    <a href="/" class="block md:hidden mx-auto bottom-8 fixed items-center justify-center gap-1.5 px-8 py-3 text-sm font-medium text-gray-400 bg-gray-700/80 hover:bg-gray-600/80 rounded-lg transition-colors">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 14L4 9l5-5" />
+            <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+        </svg>
+    </a>
+</body>
+</html>
