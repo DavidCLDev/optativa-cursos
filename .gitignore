@@ -7,4 +7,6 @@ venv/
 
 # Caché de Python
 __pycache__/
-db.sqlite.3
+
+# db
+db.sqlite3
