@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Curso</title>
+    <!-- CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 antialiased min-h-screen flex items-center justify-center p-4 text-gray-100">
+    
+    <main class="w-full max-w-md bg-gray-900 rounded-2xl border border-gray-800 p-8 shadow-xl">
+        <header class="mb-6">
+            <!-- Cambiamos el encabezado para indicar edición -->
+            <h1 class="text-2xl font-bold tracking-tight text-white text-center">Editar Curso</h1>
+            <p class="text-sm text-gray-400 text-center mt-1">Modifica los campos necesarios para actualizar el curso.</p>
+        </header>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="space-y-5">
+                
+                <!-- Campo: Título -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="titulo" class="text-sm font-medium text-gray-300">Título del curso</label>
+                    <input type="text" name="titulo" id="titulo" 
+                           value="{{ curso.titulo }}"
+                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-950" 
+                           placeholder="Ej. Introducción a Python" required>
+                </div>
+
+                <!-- Campo: Descripción -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="descripcion" class="text-sm font-medium text-gray-300">Descripción</label>
+                    <!-- En los textarea el contenido va directamente entre las etiquetas, no en un atributo value -->
+                    <textarea name="descripcion" id="descripcion" rows="4"
+                              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-950 resize-none" 
+                              placeholder="Describe brevemente de qué trata el curso..." required>{{ curso.descripcion }}</textarea>
+                </div>
+
+                <!-- Campo: Nivel -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="nivel" class="text-sm font-medium text-gray-300">Nivel de dificultad</label>
+                    <select name="nivel" id="nivel" 
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-950 cursor-pointer">
+                        <!-- Usamos la lógica de Django para marcar la opción guardada actualmente -->
+                         {% for valor, etiqueta in curso.NIVEL_CHOICES %}
+                            <option value="{{ valor }}" {% if curso.nivel == valor %}selected{% endif %}>
+                                {{ etiqueta }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Campo: Número de lecciones -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="num_lecciones" class="text-sm font-medium text-gray-300">Número de lecciones</label>
+                    <input type="number" name="num_lecciones" id="num_lecciones" min="1"
+                           value="{{ curso.num_lecciones }}"
+                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-500 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-950" 
+                           placeholder="0" required>
+                </div>
+
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex flex-col sm:flex-row gap-3 mt-8">
+                <button type="submit" 
+                        class="w-full sm:w-1/2 bg-green-600 hover:bg-green-500 active:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-150 shadow-md shadow-green-900/20 text-center cursor-pointer">
+                    Actualizar
+                </button>
+                <!-- Redirección dinámica al detalle del curso si se cancela la edición -->
+                <a href="{% url 'detalle_curso' id_curso=curso.id %}" 
+                   class="w-full sm:w-1/2 bg-gray-800 hover:bg-gray-700 active:bg-gray-800 text-gray-300 border border-gray-700 font-medium py-2.5 px-4 rounded-lg transition duration-150 text-center block">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </main>
+
+</body>
+</html>
