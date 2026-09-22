@@ -55,7 +55,7 @@
                             <!-- Contador de lecciones -->
                             <span class="text-gray-500">•</span>
                             <span class="text-gray-400 font-medium">
-                                {{ curso.num_lecciones }} {% if curso.num_lecciones == 1 %}lección{% else %}lecciones{% endif %}
+                                {{ curso.lecciones.count }} {% if curso.lecciones.count == 1 %}lección{% else %}lecciones{% endif %}
                             </span>
                         </div>
                     </div>

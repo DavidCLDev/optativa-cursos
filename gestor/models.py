@@ -16,7 +16,30 @@ class Curso(models.Model):
         choices=NIVEL_CHOICES,
         default='INTERMEDIO'
     )
-    num_lecciones = models.DecimalField(max_digits=2, decimal_places=0)
 
     def __str__(self):
         return self.titulo
+
+class Leccion(models.Model):
+
+    ESTADO_CHOICES = [
+        ('BORRADOR', 'Borrador'),
+        ('PUBLICADO', 'Publicado')
+    ]
+
+    titulo = models.CharField(max_length=100)
+    contenido = models.TextField()
+    duracion = models.IntegerField()
+    estado = models.CharField(
+        max_length=9,
+        choices=ESTADO_CHOICES,
+        default='BORRADOR'
+    )
+    curso = models.ForeignKey(
+        Curso,
+        on_delete=models.CASCADE,
+        related_name='lecciones'
+    )
+
+    def __str__(self):
+        return self.titulo + " (" + self.curso.titulo + ")"
