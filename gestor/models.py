@@ -16,6 +16,7 @@ class Curso(models.Model):
         choices=NIVEL_CHOICES,
         default='INTERMEDIO'
     )
+    imagen = models.ImageField(upload_to="img/", default="img/logo.png")
 
     def __str__(self):
         return self.titulo

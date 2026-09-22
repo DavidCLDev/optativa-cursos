@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Curso</title>
+    <!-- CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 antialiased min-h-screen flex items-center justify-center p-4 text-gray-100">
+    
+    <main class="w-full max-w-md bg-gray-900 rounded-2xl border border-gray-800 p-8 shadow-xl">
+        <header class="mb-6">
+            <h1 class="text-2xl font-bold tracking-tight text-white text-center">Nueva Lección</h1>
+            <p class="text-sm text-gray-400 text-center mt-1">Completa los campos para agregar la lección al curso</p>
+        </header>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="space-y-5">
+                
+                <!-- Campo: Título -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="titulo" class="text-sm font-medium text-gray-300">Título</label>
+                    <input type="text"  value="{{ leccion.titulo }}" name="titulo" id="titulo" 
+                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white
+                           placeholder-gray-500 outline-none transition focus:border-green-500 focus:ring-2
+                           focus:ring-green-950" 
+                           placeholder="Ej. clases y funciones en Python" required>
+                </div>
+
+                <!-- Campo: Contenido -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="contenido" class="text-sm font-medium text-gray-300">Contenido</label>
+                    <textarea name="contenido" id="contenido" rows="4"
+                              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2
+                              text-white placeholder-gray-500 outline-none transition
+                              focus:border-green-500 focus:ring-2 focus:ring-green-950 resize-none" 
+                              placeholder="Describe brevemente de qué trata la lección..." required
+                    >{{ leccion.contenido }}</textarea>
+                </div>
+
+                <!-- Campo: estado -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="estado" class="text-sm font-medium text-gray-300">Estado</label>
+                    <select name="estado" id="estado" 
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white
+                            outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-950
+                            cursor-pointer">
+                        {% for valor, etiqueta in leccion.ESTADO_CHOICES %}
+                        <option 
+                        value="{{ valor }}"
+                        {% if leccion.estado == valor %} selected {% endif %}
+                        >{{ etiqueta }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Campo: duración -->
+                <div class="flex flex-col gap-1.5">
+                    <label for="duracion" class="text-sm font-medium text-gray-300">Duración</label>
+                    <input type="number" name="duracion" value="{{ leccion.duracion }}" id="duracion"
+                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white
+                           placeholder-gray-500 outline-none transition focus:border-green-500 focus:ring-2
+                           focus:ring-green-950" required>
+                </div>
+
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex flex-col sm:flex-row gap-3 mt-8">
+                <button type="submit"
+                        class="w-full sm:w-1/2 bg-green-600 hover:bg-green-500 active:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-150 shadow-md shadow-green-900/20 text-center cursor-pointer">
+                    Guardar Lección
+                </button>
+                <a href="{% url 'detalle_curso' leccion.curso.id %}"
+                   class="w-full sm:w-1/2 bg-gray-800 hover:bg-gray-700 active:bg-gray-800 text-gray-300 border border-gray-700 font-medium py-2.5 px-4 rounded-lg transition duration-150 text-center block">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </main>
+
+</body>
+</html>
