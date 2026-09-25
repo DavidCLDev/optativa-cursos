@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestor de Cursos{% endblock %}</title>
+    <!-- Tailwind CSS v4 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* Solo estilos base para el cuerpo y transiciones suaves */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #030712;
+        }
+
+               /* Transición suave para el navbar */
+        .nav-link {
+            transition: all 0.15s ease;
+        }
+        .nav-link:hover {
+            transform: translateY(-1px);
+        }
+        /* Iconos SVG inline de Tailwind 4 (Heroicons) */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+        }
+        .icon-sm {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+        }
+        /* Estilo para los campos del formulario */
+        input, textarea {
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        input:focus, textarea:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-300 min-h-screen flex flex-col">
+
+    <!-- Navbar minimalista con iconos Tailwind 4 -->
+    <nav class="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo y marca -->
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 bg-gradient-to-br from-green-600 to-emerald-700 rounded-lg flex items-center justify-center shadow-md">
+                            <img src="{% static 'img/logo.png' %}" alt="Logo" class="p-1">
+                        </div>
+                        <span class="text-lg font-semibold text-white tracking-tight hidden sm:block">
+                            Gestor de Cursos
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Enlaces de navegación -->
+                <div class="flex items-center gap-1 sm:gap-2">
+                    <a href="{% url 'lista_cursos' %}" 
+                       class="nav-link inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 text-sm font-medium text-gray-400 hover:text-green-400 hover:bg-gray-800/80 rounded-lg transition-all">
+                        <!-- Icono Clipboard (Heroicons) -->
+                        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                        </svg>
+                        <span class="hidden xs:inline">Cursos</span>
+                    </a>
+                    
+                    <!-- Separador -->
+                    <span class="w-px h-6 bg-gray-800 mx-1 hidden sm:block"></span>
+
+                    <!-- Separador -->
+                    <span class="w-px h-6 bg-gray-800 mx-1 hidden sm:block"></span>
+
+                    <!-- Dropdown del usuario -->
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                        <button @click="open = !open" 
+                                class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 hover:text-green-400 hover:bg-gray-800/80 rounded-lg transition-all nav-link">
+                            <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                            <span>{{ user.username }}</span>
+                            <svg class="icon-sm transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+
+                        <!-- Menú desplegable -->
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-150" 
+                             x-transition:enter-start="opacity-0 translate-y-[-8px]" 
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-100" 
+                             x-transition:leave-start="opacity-100 translate-y-0" 
+                             x-transition:leave-end="opacity-0 translate-y-[-8px]"
+                             class="absolute right-0 mt-2 w-48 bg-gray-900 rounded-lg shadow-lg border border-gray-800 py-1 overflow-hidden z-50"
+                             style="display: none;"
+                             x-cloak>
+                            
+                            <!-- Nombre completo del usuario -->
+                            <div class="px-4 py-2 border-b border-gray-800">
+                                <p class="text-sm font-medium text-white">{{ user.get_full_name|default:user.username }}</p>
+                                <p class="text-xs text-gray-500">{{ user.email }}</p>
+                            </div>
+                            
+                            <!-- Opciones del menú -->
+                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-400 hover:bg-gray-800/80 hover:text-green-400 transition-colors">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                                Mi perfil
+                            </a>
+                            
+                            <!-- Línea separadora -->
+                            <div class="border-t border-gray-800 my-1"></div>
+                            
+                            <!-- Cerrar sesión -->
+                            <form action="{% url 'logout' %}" method="post" class="block">
+                                {% csrf_token %}
+                                <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-red-950/40 transition-colors">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                                    </svg>
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 w-full">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer minimalista -->
+    <footer class="mt-auto border-t border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+                <span class="flex items-center gap-2">
+                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 21v-6m0 0-3-3m3 3 3-3M3 9.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 .75.75v.75a.75.75 0 0 1-.75.75H3.75a.75.75 0 0 1-.75-.75V9.75ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    2026 · Gestor de Cursos
+                </span>
+                <span class="flex items-center gap-3">
+                    <span class="flex items-center gap-1">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        David Camacho
+                    </span>
+                    <span class="hidden sm:inline text-gray-700">|</span>
+                    <span class="hidden sm:flex items-center gap-1">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6h1.5m-1.5 3h1.5m-1.5 3h1.5M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                        </svg>
+                        Optativa 1
+                    </span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alpine.js para el dropdown -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</body>
+</html>

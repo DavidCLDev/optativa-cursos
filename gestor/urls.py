@@ -3,23 +3,11 @@ from . import views
 
 urlpatterns = [
     # lista de cursos
-    path(
-        '',
-        views.listar_cursos,
-        name="lista_cursos"
-    ),
+    path('', views.listar_cursos, name="lista_cursos"),
     # Creación curso
-    path(
-        'curso/nuevo/',
-        views.crear_curso,
-        name="crear_curso"
-    ),
+    path('curso/nuevo/', views.crear_curso, name="crear_curso"),
     # Detalle curso
-    path(
-        'curso/<int:id_curso>/',
-        views.detallar_curso,
-        name="detalle_curso"
-    ),
+    path('curso/<int:id_curso>/', views.detallar_curso, name="detalle_curso"),
     # Edición curso
     path(
         'curso/<int:id_curso>/editar/',
